@@ -1,0 +1,114 @@
+BER with BPSK
+
+# BER Performance of BPSK in Rayleigh Fading Channel
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import erfc
+
+# ---------------------------------------
+# Parameters
+# ---------------------------------------
+
+N = 100000                     # Number of bits
+Eb_No_dB = np.arange(0, 31, 2)
+
+# Generate random bits
+bits = np.random.randint(0, 2, N)
+
+# BPSK Mapping
+# 0 -> -1
+# 1 -> +1
+bpsk_symbols = 2 * bits - 1
+
+# BER storage
+simulated_BER = []
+awgn_theory = []
+
+# ---------------------------------------
+# Simulation
+# ---------------------------------------
+
+for ebno_db in Eb_No_dB:
+
+    # Convert dB to linear
+    EbNo = 10 ** (ebno_db / 10)
+
+    # Noise standard deviation
+    sigma = np.sqrt(1 / (2 * EbNo))
+
+    # Rayleigh channel coefficient
+    h = (np.random.randn(N) + 1j*np.random.randn(N)) / np.sqrt(2)
+
+    # AWGN Noise
+    noise = sigma * (
+        np.random.randn(N) +
+        1j*np.random.randn(N)
+    )
+
+    # Received signal
+    y = h * bpsk_symbols + noise
+
+    # Equalization
+    y_equalized = y / h
+
+    # Detection
+    detected_bits = (np.real(y_equalized) > 0).astype(int)
+
+    # BER Calculation
+    errors = np.sum(bits != detected_bits)
+
+    BER = errors / N
+
+    simulated_BER.append(BER)
+
+    # AWGN theoretical BER
+    awgn = 0.5 * erfc(np.sqrt(EbNo))
+
+    awgn_theory.append(awgn)
+
+# ---------------------------------------
+# Rayleigh Theoretical BER
+# ---------------------------------------
+
+rayleigh_theory = 0.5 * (
+    1 - np.sqrt(
+        (10 ** (Eb_No_dB / 10)) /
+        (1 + 10 ** (Eb_No_dB / 10))
+    )
+)
+
+# ---------------------------------------
+# Plotting
+# ---------------------------------------
+
+plt.figure(figsize=(9,6))
+
+plt.semilogy(Eb_No_dB,
+             awgn_theory,
+             'g-o',
+             linewidth=2,
+             label='AWGN Theory')
+
+plt.semilogy(Eb_No_dB,
+             rayleigh_theory,
+             'b-s',
+             linewidth=2,
+             label='Rayleigh Theory')
+
+plt.semilogy(Eb_No_dB,
+             simulated_BER,
+             'r-*',
+             linewidth=2,
+             label='Rayleigh Simulation')
+
+plt.title('BER for BPSK in Rayleigh Fading Channel')
+
+plt.xlabel('Eb/No (dB)')
+plt.ylabel('Bit Error Rate')
+
+plt.grid(True, which='both')
+
+plt.legend()
+
+plt.show()

@@ -1,0 +1,89 @@
+CDMA 
+# CDMA Communication System Simulation
+
+import numpy as np
+
+# ----------------------------------------
+# Walsh Codes for 4 Users
+# ----------------------------------------
+
+c1 = np.array([1, 1, 1, 1])
+
+c2 = np.array([1, -1, 1, -1])
+
+c3 = np.array([1, 1, -1, -1])
+
+c4 = np.array([1, -1, -1, 1])
+
+# ----------------------------------------
+# Input Data Bits
+# ----------------------------------------
+
+print("Enter Data Bits (+1 or -1)\n")
+
+d1 = int(input("Enter D1: "))
+d2 = int(input("Enter D2: "))
+d3 = int(input("Enter D3: "))
+d4 = int(input("Enter D4: "))
+
+# ----------------------------------------
+# Spreading Operation
+# ----------------------------------------
+
+r1 = d1 * c1
+r2 = d2 * c2
+r3 = d3 * c3
+r4 = d4 * c4
+
+# Combined Channel Signal
+resultant_channel = r1 + r2 + r3 + r4
+
+print("\nResultant Channel Signal:")
+print(resultant_channel)
+
+# ----------------------------------------
+# Receiver Section
+# ----------------------------------------
+
+print("\nSelect Receiver Channel")
+print("1 -> C1")
+print("2 -> C2")
+print("3 -> C3")
+print("4 -> C4")
+
+channel = int(input("\nEnter Channel Number: "))
+
+# Assign Receiver Code
+if channel == 1:
+    rc = c1
+
+elif channel == 2:
+    rc = c2
+
+elif channel == 3:
+    rc = c3
+
+elif channel == 4:
+    rc = c4
+
+else:
+    print("Invalid Channel")
+    exit()
+
+# ----------------------------------------
+# Despreading Operation
+# ----------------------------------------
+
+inner_product = resultant_channel * rc
+
+print("\nInner Product:")
+print(inner_product)
+
+# Sum of Inner Product
+result = np.sum(inner_product)
+
+# Recover Data
+data = result / len(inner_product)
+
+print("\nRecovered Data Bit:")
+print(data)

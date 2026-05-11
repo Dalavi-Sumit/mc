@@ -1,0 +1,19 @@
+tcpip steps 
+
+Vs code open
+Desktop folder tcpip
+Vc open then open folder
+Abc.txt
+Server.py
+Client.py
+Then write text in abc folder
+In Server paste Server code
+In client paste client code
+Then run Server 1st and then client
+Cmd prompt
+Write " cd (path of tcpip)" then press enter
+Next line write Server.py
+2nd cmd prompt
+Write "cd (path of tcpip)" then press enter
+Next line client.py
+Now open org tcpip folder on desktop and show the 4 folder file that is output file

@@ -1,0 +1,21 @@
+DHCP Server Configuration Commands:-
+
+1. Router>enable
+
+2. Router #config terminal
+
+3. Router (config)# interface FastEthernet 0/0
+
+4. Router (config-if)# no shutdown
+
+5. Router (config-if)# ip address 192.168.1.1 255.255.255.0
+
+6. Router (config-if)# ip dhcp Pool abc
+
+7. Router (dhcp-config-if)# network 192.168.1.0 255.255.255.0
+
+8. Router (dhcp-config-if)# default-router 192.168.1.1
+
+9. Router (dhcp-config-if)# dns-Server 8.8.8.8
+
+10. Exit
